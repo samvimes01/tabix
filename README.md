@@ -40,6 +40,38 @@ yarn build
 
 ```
 
+## Docker
+
+### Custom default connection
+
+It supports environment variables for default connection:
+
+```yaml
+services:
+  tabix:
+    image: ghcr.io/samvimes01/tabix:latest
+    environment:
+      - DEFAULT_CONNECTION_URL=http://clickhouse:8123
+      - DEFAULT_CONNECTION_USER=default
+      - DEFAULT_CONNECTION_PASSWORD=secret
+      - DEFAULT_CONNECTION_NAME=Local ClickHouse
+    ports:
+      - "8122:80"
+```
+
+or docker run:
+
+```bash
+docker run -p 8122:80 \
+  -e DEFAULT_CONNECTION_URL=http://clickhouse:8123 \
+  -e DEFAULT_CONNECTION_USER=default \
+  -e DEFAULT_CONNECTION_PASSWORD=secret \
+  -e DEFAULT_CONNECTION_NAME=Local ClickHouse \
+  ghcr.io/samvimes01/tabix:latest
+```
+
+On first load, the app will auto-populate the connection settings. Users can change them afterwards in the UI.
+
 ## Requirements
 
 * Clickhouse server version up 19.x

@@ -11,6 +11,8 @@ html
     //- 
     link(rel="shortcut icon" type="image/png" sizes="any" href="assets/favicon.png")
     
+    script(src="/config.js")
+
     //- Styles
     each file in htmlWebpackPlugin.files.css
       link(rel="stylesheet" href=file)

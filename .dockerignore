@@ -1,0 +1,15 @@
+node_modules
+dist
+.cache
+.awcache
+.idea
+.vscode
+.history
+.DS_Store
+*.log
+docker
+.git
+.yarn
+.pnp.cjs
+.pnp.loader.mjs
+.yarnrc.yml

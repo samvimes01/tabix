@@ -82,12 +82,12 @@ const plugins = [
     BUILD_VERSION: JSON.stringify(VersionBuild),
     BUILD_TIME: Date.now(),
   }),
-  new ForkTsCheckerPlugin({
+  ...(!process.env.SKIP_TS_CHECK ? [new ForkTsCheckerPlugin({
     typescript: {
       memoryLimit: 2048,
       configFile: path.resolve(baseDir, 'app/tsconfig.json'),
     },
-  }),
+  })] : []),
   // new CompressionPlugin(),
   // new BundleAnalyzerPlugin({
   //   openAnalyzer: false, // http://127.0.0.1:8888/
@@ -248,9 +248,10 @@ module.exports = (env, argv) => {
     console.log(`\x1b[36m 🙇🏼‍ 🙇🏼  Is production mode [${VersionBuild}] \x1b[0m`);
     common = merge(common, {
       mode: 'production',
+      devtool: 'source-map',
       optimization: {
         minimize: true,
-        minimizer: [new TerserPlugin({ parallel: 8 })],
+        minimizer: [new TerserPlugin({ parallel: 8, extractComments: false })],
       },
     });
   } else {

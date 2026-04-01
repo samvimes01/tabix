@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { supportsHistory } from 'history/DOMUtils';
 import { Provider } from 'mobx-react';
 import { initStores } from 'stores';
-import { connectionsStorage } from 'services';
+import { connectionsStorage, ConnectionType } from 'services';
 import App, { AppProps } from 'views/App';
 
 const appRootElement = document.getElementById('root')!;
@@ -28,6 +28,24 @@ function render(
 }
 
 (async () => {
+  // Seed default connection from runtime config.js if no connections exist
+  const cfg = (window as any).__TABIX_CONFIG__;
+  if (cfg?.DEFAULT_CONNECTION_URL) {
+    const existing = await connectionsStorage.get();
+    if (existing.length === 0) {
+      const defaultConn = {
+        type: ConnectionType.Direct,
+        connectionName: cfg.DEFAULT_CONNECTION_NAME || 'Default',
+        connectionUrl: cfg.DEFAULT_CONNECTION_URL,
+        username: cfg.DEFAULT_CONNECTION_USER || 'default',
+        password: cfg.DEFAULT_CONNECTION_PASSWORD || '',
+        version: '',
+      };
+      await connectionsStorage.saveConnections([defaultConn]);
+      await connectionsStorage.saveLastActiveConnection(defaultConn);
+    }
+  }
+
   const rootStore = initStores();
   const connection = await connectionsStorage.getLastActiveConnection();
 
