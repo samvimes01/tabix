@@ -8,4 +8,4 @@ window.__TABIX_CONFIG__ = {
 };
 EOF
 
-exec static-web-server --port 80 --root /public --page-fallback index.html
+exec static-web-server --port "${PORT:-80}" --root /public --page-fallback index.html

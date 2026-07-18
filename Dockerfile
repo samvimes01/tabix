@@ -19,5 +19,6 @@ WORKDIR /public
 COPY --from=build /app/dist/ .
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-EXPOSE 80
+ENV PORT=80
+EXPOSE ${PORT}
 ENTRYPOINT ["/docker-entrypoint.sh"]
